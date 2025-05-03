@@ -49,15 +49,15 @@ public class UserService {
     public UpdateUserResponse updateUser(String username, UpdateUserRequest updateRequest) {
         User user = new User();
 
-        if (updateRequest.getUsername() == null && updateRequest.getUsername().isBlank()) {
+        if (updateRequest.getUsername() != null && !updateRequest.getUsername().isBlank()) {
             user.setUsername(updateRequest.getUsername());
         }
 
-        if (updateRequest.getEmail() == null && updateRequest.getEmail().isBlank()) {
+        if (updateRequest.getEmail() != null && !updateRequest.getEmail().isBlank()) {
             user.setEmail(updateRequest.getEmail());
         }
 
-        if (updateRequest.getPassword() == null && updateRequest.getPassword().isBlank()) {
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
         }
 

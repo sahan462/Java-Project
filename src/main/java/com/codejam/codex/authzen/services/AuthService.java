@@ -55,7 +55,6 @@ public class AuthService {
      * @return true if registration was successful, false otherwise.
      */
     public UserResponse registerUser(RegisterRequest request) {
-
         List<Role> roles = roleRepository.findByName("ROLE_USER");
         if (roles.isEmpty()) {
             throw new RuntimeException("Default role not found: ROLE_USER");
@@ -67,18 +66,20 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setActive(true);
+        user.setLocked(false);
         user.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
 
         UserRole userRoleMapping = new UserRole();
-        userRoleMapping.setUser(new User());
+        userRoleMapping.setUser(user); // use the actual user
         userRoleMapping.setRole(userRole);
         user.getUserRoles().add(userRoleMapping);
 
-        userRepository.save(new User());
-        List<String> permissionNames = new ArrayList<>();
+        userRepository.save(user); // save the populated user
 
-        return UserResponse.fromEntity(new User(), permissionNames);
+        List<String> permissionNames = new ArrayList<>();
+        return UserResponse.fromEntity(user, permissionNames); // use the actual user
     }
+
 
 
     /**

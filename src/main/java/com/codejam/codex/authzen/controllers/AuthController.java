@@ -131,11 +131,11 @@ public class AuthController {
                 response.setMessage("Password reset successfully");
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new AuthzenResponse<>(null, false, "Failed to reset password"));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new AuthzenResponse<>(null, false, "An error occurred during password reset"));
         }
     }

@@ -47,13 +47,10 @@ public class AdminController {
      */
     private String verifyAdmin(HttpServletRequest request) {
         String username = authEndpoint.getUsername(request);
-        System.out.println("111111111111111111111");
         if (username == null || !authEndpoint.isAuthenticated(request)) {
             throw new AccessDeniedException("Unauthorized: No token provided.");
         }
-        System.out.println("2222222222222222222");
         UserResponse userResponse = authEndpoint.getUserDetails(username);
-        System.out.println("33333333333333");
         if (userResponse == null || !userResponse.getRoles().contains("ROLE_ADMIN")) {
             throw new AccessDeniedException("Forbidden: Insufficient permissions.");
         }
@@ -116,11 +113,16 @@ public class AdminController {
     public ResponseEntity<AuthzenResponse<UpdateUserResponse>> updateUserRole(@PathVariable("id") Long userId,
                                                                               @RequestBody RoleUpdateRequest roleUpdateRequest,
                                                                               HttpServletRequest request) {
-        String username = verifyAdmin(request);
-        UpdateUserResponse updated = adminEndpoint.updateUserRoles(userId, roleUpdateRequest, username);
-        AuthzenResponse<UpdateUserResponse> response = new AuthzenResponse<>(updated);
-        response.setMessage("User roles updated successfully");
-        return ResponseEntity.ok(response);
+        try{
+            String username = verifyAdmin(request);
+            UpdateUserResponse updated = adminEndpoint.updateUserRoles(userId, roleUpdateRequest, username);
+            AuthzenResponse<UpdateUserResponse> response = new AuthzenResponse<>(updated);
+            response.setMessage("User roles updated successfully");
+            return ResponseEntity.ok(response);
+        }catch(Exception e) {
+            System.out.println("error");
+        }
+        return null;
     }
 
     /**

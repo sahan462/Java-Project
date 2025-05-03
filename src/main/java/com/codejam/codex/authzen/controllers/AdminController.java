@@ -47,11 +47,13 @@ public class AdminController {
      */
     private String verifyAdmin(HttpServletRequest request) {
         String username = authEndpoint.getUsername(request);
+        System.out.println("111111111111111111111");
         if (username == null || !authEndpoint.isAuthenticated(request)) {
             throw new AccessDeniedException("Unauthorized: No token provided.");
         }
-
+        System.out.println("2222222222222222222");
         UserResponse userResponse = authEndpoint.getUserDetails(username);
+        System.out.println("33333333333333");
         if (userResponse == null || !userResponse.getRoles().contains("ROLE_ADMIN")) {
             throw new AccessDeniedException("Forbidden: Insufficient permissions.");
         }
@@ -70,11 +72,16 @@ public class AdminController {
     @Secured("ROLE_ADMIN")
     @PreAuthorize("hasAuthority('VIEW_USER')")
     public ResponseEntity<AuthzenResponse<List<UserResponse>>> getAllUsers(HttpServletRequest request) {
-        String username = verifyAdmin(request);
-        List<UserResponse> users = adminEndpoint.getAllUsers(username);
-        AuthzenResponse<List<UserResponse>> response = new AuthzenResponse<>(users);
-        response.setMessage("Users listed successfully.");
-        return ResponseEntity.ok(response);
+        try {
+            String username = verifyAdmin(request);
+            List<UserResponse> users = adminEndpoint.getAllUsers(username);
+            AuthzenResponse<List<UserResponse>> response = new AuthzenResponse<>(users);
+            response.setMessage("Users listed successfully.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.out.println("Error in getAllUsers: " + e.getMessage());
+        }
+        return null;
     }
 
     /**

@@ -69,7 +69,9 @@ public class JwtService {
         claims.put("username", userResponse.getUsername());
         claims.put("roles", userResponse.getRoles());
         claims.put("permissions", userResponse.getPermissions());
-        return buildToken(claims, "wronguser", accessTokenExpiry);
+
+        // Using userResponse.getUsername() instead of hardcoded "wronguser"
+        return buildToken(claims, userResponse.getUsername(), accessTokenExpiry);
     }
 
     public String generateRefreshToken(UserResponse userDetails) {

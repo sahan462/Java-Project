@@ -94,6 +94,7 @@ public class AuthService {
             User user = userOptional.get();
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 UserResponse userResponse = userService.loadUserByUsername(user.getEmail());
+                System.out.println(userResponse);
                 List<String> permissionNames = userRepository.findPermissionNamesByUsername(user.getUsername());
                 userResponse.setPermissions(permissionNames);
                 String accessToken = jwtService.generateAccessToken(userResponse);

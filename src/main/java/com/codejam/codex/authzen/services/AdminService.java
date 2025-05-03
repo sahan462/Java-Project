@@ -33,7 +33,7 @@ public class AdminService {
 
     public List<UserResponse> getAllUsers(String adminUsername) {
         logAction(adminUsername, "User list got successfully");
-
+        System.out.println("Inside service");
         return userRepository.findAll()
                 .stream()
                 .map(user -> {

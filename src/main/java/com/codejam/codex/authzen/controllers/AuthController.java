@@ -35,13 +35,12 @@ public class AuthController {
     @PostMapping(ApiEndpoint.AUTH_REGISTER)
     public ResponseEntity<AuthzenResponse<UserResponse>> register(@RequestBody RegisterRequest request) {
         try {
-            System.out.println("Inside registration");
             UserResponse userResponse = authEndpoint.registerUser(request);
             AuthzenResponse<UserResponse> response = new AuthzenResponse<>(userResponse);
             response.setMessage("User registered successfully");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("An error occurred during registration"+e.getMessage());
+            throw new RuntimeException("An error occurred during registration");
         }
     }
 
